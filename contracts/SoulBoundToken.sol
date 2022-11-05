@@ -1,4 +1,4 @@
-`// SPDX-License-Identifier: MIT 
+// SPDX-License-Identifier: MIT 
 pragma solidity ^0.8.4; 
  
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol"; 
@@ -6,12 +6,13 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol"; 
 import "@openzeppelin/contracts/utils/Counters.sol"; 
  
-contract MyToken is ERC721, ERC721URIStorage, Ownable { 
+contract SoulBoundToken is ERC721, ERC721URIStorage, Ownable { 
     using Counters for Counters.Counter; 
- 
+    
     Counters.Counter private _tokenIdCounter; 
- 
-    constructor() ERC721("Soulbound Certificate Test2", "SBCTT") {} 
+    string private _baseTokenURI;
+    constructor(string memory name_, string memory symbol_) ERC721(name_,symbol_) {
+    }
  
     function safeMint(address to, string memory uri) public onlyOwner { 
         uint256 tokenId = _tokenIdCounter.current(); 
@@ -28,9 +29,11 @@ contract MyToken is ERC721, ERC721URIStorage, Ownable {
         require(from == address(0), "Err: token transfer is BLOCKED"); 
         super._beforeTokenTransfer(from, to, tokenId); 
     } 
+    
  
     // The following functions are overrides required by Solidity. 
- 
+
+    
     function _burn(uint256 tokenId) 
         internal 
         override(ERC721, ERC721URIStorage) 
@@ -47,4 +50,3 @@ contract MyToken is ERC721, ERC721URIStorage, Ownable {
         return super.tokenURI(tokenId); 
     } 
 } 
-`
