@@ -81,6 +81,14 @@ contract SoulBoundToken is ERC721, ERC721URIStorage, Ownable {
         return _issuedTokens[Issuer];
     }
 
+    function getCertificateIDsFromAddress(address tokenOwner)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return _userInfo[tokenOwner];
+    }
+
     function getURIsFromAddress(address tokenOwner)
         public
         view
