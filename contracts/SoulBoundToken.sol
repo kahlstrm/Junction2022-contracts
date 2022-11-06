@@ -38,15 +38,10 @@ contract SoulBoundToken is ERC721, ERC721URIStorage, Ownable {
         uint256 tokenId
     ) internal virtual override {
         require(
-            from == address(0) || to == address(0),
+            from == address(0) || (to == address(0) && from == msg.sender),
             "Err: token transfer is BLOCKED"
         );
-        if (to == address(0)) {
-            require(
-                _tokenIssuer[tokenId] == msg.sender || from == msg.sender,
-                "only the issuer of the certificate or the owner can burn the token."
-            );
-        }
+
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
@@ -59,6 +54,7 @@ contract SoulBoundToken is ERC721, ERC721URIStorage, Ownable {
                 _issuedTokens[issuer][i] = _issuedTokens[issuer][
                     _issuedTokens[issuer].length - 1
                 ];
+                break;
             }
         }
         _issuedTokens[issuer].pop();
